@@ -9,61 +9,57 @@ import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   template: `
-    <article>
-      <img
-        class="listing-photo"
-        [src]="housingLocation?.photo"
-        alt="Exterior photo of {{ housingLocation?.name }}"
-        crossorigin
-      />
-      <section class="listing-description">
-        <h2 class="listing-heading">{{ housingLocation?.name }}</h2>
-        <p class="listing-location">{{ housingLocation?.city }}, {{ housingLocation?.state }}</p>
-      </section>
-      <section class="listing-features">
-        <h2 class="section-heading">About this housing location</h2>
-        <ul>
-          <li>Units available: {{ housingLocation?.availableUnits }}</li>
-          <li>Does this location have wifi: {{ housingLocation?.wifi }}</li>
-          <li>Does this location have laundry: {{ housingLocation?.laundry }}</li>
-        </ul>
-      </section>
+    <article class="articledetails">
+ 
+      
+      
       <section class="listing-apply">
-        <h2 class="section-heading">Apply now to live here</h2>
         <form [formGroup]="applyForm" (submit)="submitApplication()">
           <label for="first-name">First Name</label>
           <input id="first-name" type="text" formControlName="firstName" />
           <label for="last-name">Last Name</label>
-          <input id="last-name" type="text" formControlName="lastName" />
-          <label for="email">Email</label>
-          <input id="email" type="email" formControlName="email" />
-          <button type="submit" class="primary">Apply now</button>
+          <input id="last-name" type="text" formControlName="lastName"  />
+          <button type="submit" class="save">บันทึก</button>
         </form>
+        <button (click)="deleteApplication()" class="delete">ลบรายชื่อ</button>
+        <button (click)="navigateHome()" class="back">ยกเลิก</button>
       </section>
     </article>
   `,
   styleUrls: ['./details.component.css'],
 })
 export class DetailsComponent {
+deleteApplication() {
+if (confirm('Are you sure you want to delete this application?')) {
+  this.housingService.deleteStudentById(this.housingLocation?.id ?? 0);
+  window.location.href = '/';
+}
+
+}
+
+navigateHome() {
+  window.location.href = '/';
+}
   route: ActivatedRoute = inject(ActivatedRoute);
   housingService = inject(HousingService);
   housingLocation: HousingLocation | undefined;
-  applyForm = new FormGroup({
-    firstName: new FormControl(''),
-    lastName: new FormControl(''),
-    email: new FormControl(''),
-  });
+  applyForm!: FormGroup;
+
   constructor() {
-    const housingLocationId = parseInt(this.route.snapshot.params['id'], 10);
-    this.housingService.getHousingLocationById(housingLocationId).then((housingLocation) => {
-      this.housingLocation = housingLocation;
+    const housingLocationId = Number(this.route.snapshot.params['id']);
+    this.housingLocation = this.housingService.getHousingLocationById(housingLocationId);
+    this.applyForm = new FormGroup({
+      firstName: new FormControl(this.housingLocation?.name ?? ''),
+      lastName: new FormControl(this.housingLocation?.lastname ?? ''),
     });
   }
+  
   submitApplication() {
-    this.housingService.submitApplication(
+    this.housingService.editStudentById(
+      this.housingLocation?.id ?? 0,
       this.applyForm.value.firstName ?? '',
       this.applyForm.value.lastName ?? '',
-      this.applyForm.value.email ?? '',
     );
+    window.location.href = '/';
   }
 }

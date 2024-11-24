@@ -1,7 +1,7 @@
 .results {
     display: grid;
-    column-gap: 14px;
-    row-gap: 14px;
+    column-gap: 4px;
+    row-gap: 4px;
     grid-template-columns: repeat(auto-fill, minmax(400px, 400px));
     margin-top: 50px;
     justify-content: space-around;
@@ -13,6 +13,10 @@
     margin-right: 4px;
     display: inline-block;
     width: 30%;
+    margin-left: 10px;
+    margin-right: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+
   }
   button {
     padding: 10px;
@@ -20,6 +24,16 @@
     background: var(rebeccapurple);
     color: black;
     border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  button:hover {
+    background-color: darkorchid;
+  }
+
+  button:active {
+    background-color: indigo;
   }
   @media (min-width: 500px) and (max-width: 768px) {
     .results {
@@ -34,3 +48,8 @@
         grid-template-columns: 1fr;
     }    
   }
+.listing{
+    background-color: bisque;
+    border-radius: 8px;
+    text-align: center;
+}

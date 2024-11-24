@@ -8,7 +8,7 @@
   .listing-heading {
     font-size: 48pt;
     font-weight: bold;
-    margin-bottom: 15px;
+    margin-right: 15px;
   }
   .listing-location::before {
     content: url('/assets/location-pin.svg') / '';
@@ -59,4 +59,55 @@
       width: 100%;
       height: 400px;
     }
+    
+  }
+  button {
+    padding: 10px;
+    border: solid 1px var(--primary-color);
+    background: var(rebeccapurple);
+    color: black;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background-color: darkorchid;
+  }
+
+  button:active {
+    background-color: indigo;
+  }
+  .delete { 
+    margin-top: 10px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 300px;
+    background-color: red;
+    color: white;
+  }
+  .save { 
+    margin-top: 10px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 300px;
+    background-color: greenyellow;
+    color: black;
+  }
+  .back { 
+    margin-top: 10px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 300px;
+    background-color: rgb(73, 80, 63);
+    color: rgb(255, 255, 255);
+  }
+  .articledetails {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
   }

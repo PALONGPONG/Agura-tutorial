@@ -4,19 +4,23 @@ import {HousingLocationComponent} from '../housing-location/housing-location.com
 import {HousingLocation} from '../housinglocation';
 import {HousingService} from '../housing.service';
 @Component({
-  standalone: true,
   selector: 'app-home',
+  standalone: true,
   imports: [CommonModule, HousingLocationComponent],
   template: `
     <section>
-      <form>
-        <input type="text" placeholder="Filter by city" #filter />
-        <button class="primary" type="button" (click)="filterResults(filter.value)">Search</button>
-      </form>
+      <h1>เพิ่มรายชื่อ</h1>
+      <form class="search" (submit)="createstudent() ">
+          <label for="first-name">First Name</label>
+          <input id="first-name" type="text" formControlName="firstName" />
+          <label for="last-name">Last Name</label>
+          <input id="last-name" type="text" formControlName="lastName"  />
+          <button type="submit" class="">บันทึก</button>
+    </form>
     </section>
     <section class="results">
-      <app-housing-location
-        *ngFor="let housingLocation of filteredLocationList"
+      <app-housing-location class="listing"
+        *ngFor="let housingLocation of housingLocationList"
         [housingLocation]="housingLocation"
       ></app-housing-location>
     </section>
@@ -24,22 +28,16 @@ import {HousingService} from '../housing.service';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent {
+  applyForm: any;
+createstudent() {
+    this.housingService.addStudent(
+      (document.getElementById('first-name') as HTMLInputElement).value,
+      (document.getElementById('last-name') as HTMLInputElement).value
+    );
+}
   housingLocationList: HousingLocation[] = [];
   housingService: HousingService = inject(HousingService);
-  filteredLocationList: HousingLocation[] = [];
   constructor() {
-    this.housingService.getAllHousingLocations().then((housingLocationList: HousingLocation[]) => {
-      this.housingLocationList = housingLocationList;
-      this.filteredLocationList = housingLocationList;
-    });
-  }
-  filterResults(text: string) {
-    if (!text) {
-      this.filteredLocationList = this.housingLocationList;
-      return;
-    }
-    this.filteredLocationList = this.housingLocationList.filter((housingLocation) =>
-      housingLocation?.city.toLowerCase().includes(text.toLowerCase()),
-    );
+    this.housingLocationList = this.housingService.getAllHousingLocations();
   }
 }
